@@ -1,0 +1,32 @@
+//used for grass blocks
+//so it looks like the grass has some movements :)
+
+material
+{
+    name: simple_vertex_interact,
+    parameters :
+    [
+        { type: sampler2d, name: color }
+    ],
+    requires : [uv0],
+    shadingModel : lit
+}
+
+vertex
+{
+    void materialVertex(inout MaterialVertexInputs material)
+    {
+        material.worldPosition += (fract(getPosition()) - 0.5) * float4(sin(getUserTime().x)/10., 0., cos(getUserTime().x)/10., 0.);
+    }
+}
+
+fragment
+{
+    void material(inout MaterialInputs material)
+    {
+        prepareMaterial(material);
+
+        float4 baseColour = texture(materialParams_color, getUV0());
+        material.baseColor = baseColour;
+    }
+}

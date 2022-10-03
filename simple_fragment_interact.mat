@@ -1,0 +1,28 @@
+//used for leaves blocks
+//so it looks like the leaves has some movements :)
+
+material
+{
+    name: simple_fragment_interact,
+    parameters :
+    [
+        {type: sampler2d, name: color},
+        {type: float, name: wave_speed}
+    ],
+    requires : [uv0],
+    shadingModel : lit
+}
+
+fragment
+{
+    void material(inout MaterialInputs material)
+    {
+        prepareMaterial(material);
+
+        float2 uv = getUV0();
+        float2 moved_uv = uv + uv * float2(sin(getUserTime().x), cos(getUserTime().x)) * materialParams.wave_speed;
+
+        float4 baseColour = texture(materialParams_color, moved_uv);
+        material.baseColor = baseColour;
+    }
+}
